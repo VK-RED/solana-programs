@@ -4,7 +4,7 @@ import { SolanaPrograms } from "../target/types/solana_programs";
 import { Keypair } from "@solana/web3.js";
 import { assert, expect } from "chai";
 
-describe("solana-programs", () => {
+describe("counter program", () => {
   const provider = anchor.AnchorProvider.env();
 
   // Configure the client to use the local cluster.
