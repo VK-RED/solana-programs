@@ -2,7 +2,7 @@ import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { SolanaPrograms } from "../target/types/solana_programs";
 import { Keypair } from "@solana/web3.js";
-import { expect } from "chai";
+import { assert, expect } from "chai";
 
 describe("solana-programs", () => {
   const provider = anchor.AnchorProvider.env();
@@ -64,7 +64,42 @@ describe("solana-programs", () => {
 
   })
   
-  //TODO : WRITE TEST FOR CATCHING NEGATIVE VALUES
+  it("should throw error on decrement when the value is Zero", async () => {
+
+    const newAccount = Keypair.generate();
+
+    await program.methods
+    .initialize(new anchor.BN(0))
+    .accounts({
+      authority: authority.publicKey,
+      myAccount: newAccount.publicKey,
+    })
+    .signers([newAccount])
+    .rpc();
+
+    const account = await program.account.counterAccount.fetch(newAccount.publicKey);
+
+    expect(account.counter.toNumber()).equals(0);
+
+    try {
+
+      await program.methods
+      .decrement()
+      .accounts({
+        counterAccount: newAccount.publicKey,
+      })
+      .rpc();
+
+      assert(false, "it should not have reached here");
+
+    } catch (_err) {
+      expect(_err).to.be.instanceOf(anchor.AnchorError);
+      const err : anchor.AnchorError = _err;
+      expect(err.error.errorCode.code).to.equal("CounterNegative");
+      expect(err.program.equals(program.programId));
+    }
+
+  })
 
 
 });
