@@ -2,20 +2,17 @@ import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { SolanaPrograms } from "../target/types/solana_programs";
 import { Keypair } from "@solana/web3.js";
-import fs from "fs";
 import { expect } from "chai";
 
 describe("solana-programs", () => {
+  const provider = anchor.AnchorProvider.env();
+
   // Configure the client to use the local cluster.
-  anchor.setProvider(anchor.AnchorProvider.env());
+  anchor.setProvider(provider);
 
   const program = anchor.workspace.SolanaPrograms as Program<SolanaPrograms>;
 
-  const filePath = "/home/vishnu/.config/solana/id.json";
-  const secret = JSON.parse(fs.readFileSync(filePath).toString()) as number[]; 
-  const secretKey = Uint8Array.from(secret);
-
-  const authority = anchor.web3.Keypair.fromSecretKey(secretKey)
+  const authority = provider.wallet as anchor.Wallet;
   const newAccount = Keypair.generate();
 
   it("Is initialized!", async () => {
@@ -26,7 +23,7 @@ describe("solana-programs", () => {
       authority: authority.publicKey,
       myAccount: newAccount.publicKey,
     })
-    .signers([authority,newAccount])
+    .signers([newAccount])
     .rpc();
 
     console.log("The tx is : ", tx);
