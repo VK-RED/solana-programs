@@ -41,8 +41,7 @@ pub mod todo {
 
         require!(!limit_reached, TodoError::ReachedLimit);
 
-        todos.insert(add_todo_ind , Some(data));
-
+        todos[add_todo_ind] = Some(data);
 
         Ok(())
     }
