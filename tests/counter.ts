@@ -1,6 +1,6 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
-import { SolanaPrograms } from "../target/types/solana_programs";
+import { Counter } from "../target/types/counter";
 import { Keypair } from "@solana/web3.js";
 import { assert, expect } from "chai";
 
@@ -10,7 +10,7 @@ describe("counter program", () => {
   // Configure the client to use the local cluster.
   anchor.setProvider(provider);
 
-  const program = anchor.workspace.SolanaPrograms as Program<SolanaPrograms>;
+  const program = anchor.workspace.SolanaPrograms as Program<Counter>;
 
   const authority = provider.wallet as anchor.Wallet;
   const newAccount = Keypair.generate();
@@ -100,6 +100,5 @@ describe("counter program", () => {
     }
 
   })
-
 
 });

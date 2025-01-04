@@ -3,7 +3,7 @@ use anchor_lang::prelude::*;
 declare_id!("HQ6rZu4pav6Cp5Dhbyho9NhDWVEpTcQR5Lyy16VGw9qj");
 
 #[program]
-pub mod solana_programs {
+pub mod counter {
     use super::*;
 
     pub fn initialize(ctx:Context<Initialize>, data:u64) -> Result<()>{
