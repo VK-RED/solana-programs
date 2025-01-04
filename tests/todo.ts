@@ -59,8 +59,7 @@ describe("todo program", async () => {
             .rpc();
         }
 
-        // Fetches the todos in reverse order, so reverse it
-        const todos = (await program.account.todosAccount.fetch(PDA)).todos.reverse();
+        const todos = (await program.account.todosAccount.fetch(PDA)).todos;
         
         for(let i = 0; i < 5; i++){
             const expected = todoList[i];

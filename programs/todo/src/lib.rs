@@ -8,7 +8,7 @@ pub mod todo {
 
     pub fn initialize(ctx:Context<Initialize>) -> Result<()> {
         let account: &mut Account<'_, TodosAccount> = &mut ctx.accounts.todos;
-        account.todos = Vec::new();
+        account.todos = vec![None; 5];
         account.bump = ctx.bumps.todos;
         Ok(())
     }
