@@ -7,9 +7,7 @@ pub fn send_tokens(ctx:Context<SendTokens>, amount: u64) -> Result<()> {
     require!(amount > 10, TokenErrors::TokensTooLow); //For now restrict sending below 10 tokens 
     let payer = &mut ctx.accounts.payer_ata;
     let payee = &mut ctx.accounts.payee_ata;
-    payer.balance -= amount;
-    payee.balance += amount;
-    // payer.send_tokens(payee, amount);
+    payer.send_tokens(payee, amount);
     Ok(())
 }
 
