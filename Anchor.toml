@@ -8,6 +8,7 @@ skip-lint = false
 counter = "HQ6rZu4pav6Cp5Dhbyho9NhDWVEpTcQR5Lyy16VGw9qj"
 todo = "GKadSMTY4efrpHQy2NRo6UXYr7LhHKXMUArap2agdeES"
 token = "8TuL72KoKdLURuw4VkknXNZ3bRG9yZeoxEFKRUZNWcsi"
+token-spl = "BzJ7zpfF3dayE6YUhtEtNowZHoZ4NmCRe3emVhjjNoa1"
 
 [registry]
 url = "https://api.apr.dev"
@@ -18,3 +19,16 @@ wallet = "~/.config/solana/id.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+
+[test]
+startup_wait = 5000
+shutdown_wait = 2000
+
+[test.validator]
+bind_address = "0.0.0.0"
+url = "https://api.mainnet-beta.solana.com"
+ledger = ".anchor/test-ledger"
+rpc_port = 8899
+
+[[test.validator.clone]]
+address = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
