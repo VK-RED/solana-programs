@@ -1,0 +1,1 @@
+This repo contains code for creating and attaching metadata(METAPLEX),minting and transfer of tokens invoking SOLANA TOKEN PROGRAM
