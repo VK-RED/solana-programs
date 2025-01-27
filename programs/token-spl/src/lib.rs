@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 use anchor_spl::{
-    token::{Mint, Token, TokenAccount,MintTo,mint_to},
+    token::{Mint, Token, TokenAccount,MintTo,mint_to,Transfer, transfer},
     metadata::{
         Metadata as Metaplex,
         mpl_token_metadata::types::DataV2,
@@ -89,15 +89,37 @@ pub mod token_spl {
         Ok(())
     }
 
+    pub fn transfer_tokens(ctx:Context<TransferTokens>, amount: u64) -> Result<()> {
+
+        let accounts = ctx.accounts;
+
+        let transfer_cpi_accounts = Transfer {
+            authority: accounts.signer.to_account_info(),
+            from: accounts.from_mint_account.to_account_info(),
+            to: accounts.to_mint_account.to_account_info(), 
+        };
+
+        let transfer_cpi_ctx = CpiContext::new(accounts.token_program.to_account_info(), transfer_cpi_accounts);
+
+        transfer(transfer_cpi_ctx, amount)?;
+
+        Ok(())
+    }
+
 }
 
 
-/*
-    User can create a new mint with metadata
-    init ata
-    mint tokens 
-    and transfer tokens
-*/
+#[derive(Accounts)]
+pub struct TransferTokens<'info>{
+    pub signer: Signer<'info>,
+    #[account(mut)]
+    pub mint: Account<'info, Mint>,
+    #[account(mut)]
+    pub from_mint_account: Account<'info, TokenAccount>,
+    #[account(mut)]
+    pub to_mint_account: Account<'info, TokenAccount>,
+    pub token_program: Program<'info, Token>
+}
 
 #[derive(Accounts)]
 pub struct MintTokens<'info>{
